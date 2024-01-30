@@ -31,6 +31,7 @@ import Price from '../../../components/Price/Price'
 import UserProfileTemplate from '../../../components/Profile'
 import Select from '../../../components/Select/Select'
 import { OffersOrderBy, useFetchUserFixedPriceQuery } from '../../../graphql'
+import useCart from '../../../hooks/useCart'
 import useEnvironment from '../../../hooks/useEnvironment'
 import useOrderByQuery from '../../../hooks/useOrderByQuery'
 import usePaginate from '../../../hooks/usePaginate'
@@ -59,6 +60,8 @@ const FixedPricePage: NextPage = () => {
     },
   })
   const offers = data?.offers?.nodes
+
+  useCart({ onCheckout: refetch })
 
   const onCanceled = useCallback(async () => {
     toast({
@@ -132,6 +135,7 @@ const FixedPricePage: NextPage = () => {
                         <Flex
                           as={Link}
                           href={`/tokens/${item.asset.id}`}
+                          condition={!item.asset.deletedAt} // disable link if asset is deleted
                           gap={3}
                         >
                           <Image
@@ -204,7 +208,9 @@ const FixedPricePage: NextPage = () => {
                               </CancelOfferButton>
                             ) : BigNumber.from(
                                 item.asset.owned?.quantity || 0,
-                              ).gt(0) ? (
+                              ).gt(0) &&
+                              !item.asset.deletedAt && // only display new button if asset and currency are not deleted
+                              !item.currency.deletedAt ? (
                               <Button
                                 as={Link}
                                 href={`/tokens/${item.asset.id}/offer`}

@@ -42,6 +42,7 @@ import TraitList from '../../../components/Trait/TraitList'
 import { useFetchAssetQuery } from '../../../graphql'
 import useAccount from '../../../hooks/useAccount'
 import useBlockExplorer from '../../../hooks/useBlockExplorer'
+import useCart from '../../../hooks/useCart'
 import useDetectAssetMedia from '../../../hooks/useDetectAssetMedia'
 import useEnvironment from '../../../hooks/useEnvironment'
 import useRequiredQueryParamSingle from '../../../hooks/useRequiredQueryParamSingle'
@@ -117,6 +118,8 @@ const DetailPage: NextPage<Props> = ({ now: nowProp }) => {
     })
   }, [refetch])
 
+  useCart({ onCheckout: refetch })
+
   const refreshAsset = useRefreshAsset()
   const refreshMetadata = useCallback(
     async (assetId: string) => {
@@ -137,7 +140,7 @@ const DetailPage: NextPage<Props> = ({ now: nowProp }) => {
     [refresh, refreshAsset, toast],
   )
 
-  if (asset === null) return <Error statusCode={404} />
+  if (asset === null || asset?.deletedAt) return <Error statusCode={404} />
   return (
     <LargeLayout>
       <Head
