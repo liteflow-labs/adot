@@ -337,6 +337,7 @@ const Navbar: FC<{
   const { openConnectModal } = useConnectModal()
   const { items: cartItems } = useCart()
   const lastNotification = cookies[`lastNotification-${address}`]
+
   const {
     data: accountData,
     refetch,
@@ -348,8 +349,13 @@ const Navbar: FC<{
     },
     skip: !isLoggedIn && !address,
   })
+
   const account = isLoggedIn
     ? accountData?.account || previousAccountData?.account
+    : undefined
+
+  const notifications = isLoggedIn
+    ? accountData?.notifications || previousAccountData?.notifications
     : undefined
 
   useEffect(() => {
@@ -482,7 +488,7 @@ const Navbar: FC<{
                 >
                   <Flex>
                     <Icon as={FaBell} color="brand.black" h={4} w={4} />
-                    {account.notifications.totalCount > 0 && (
+                    {notifications && notifications.totalCount > 0 && (
                       <Flex
                         position="absolute"
                         top={2}
