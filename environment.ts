@@ -225,7 +225,7 @@ const getEnvironment = async (): Promise<Environment> => {
     CHAINS: [
       ethereumMainnet,
       {
-        name: 'LightLink Phoenix',
+        name: 'Lightlink Phoenix Mainnet',
         network: 'lightlink-phoenix',
         id: 1890,
         nativeCurrency: {
@@ -235,16 +235,10 @@ const getEnvironment = async (): Promise<Environment> => {
         },
         rpcUrls: {
           default: {
-            http: [
-              'https://replicator-01.phoenix.lightlink.io/rpc/v1',
-              'https://replicator-02.phoenix.lightlink.io/rpc/v1',
-            ],
+            http: ['https://replicator.phoenix.lightlink.io/rpc/v1'],
           },
           public: {
-            http: [
-              'https://replicator-01.phoenix.lightlink.io/rpc/v1',
-              'https://replicator-02.phoenix.lightlink.io/rpc/v1',
-            ],
+            http: ['https://replicator.phoenix.lightlink.io/rpc/v1'],
           },
         },
         blockExplorers: {
